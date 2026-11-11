@@ -1,0 +1,35 @@
+# risk-patterns.txt — worker.sh marks a task risk=high when any changed file path
+# matches a `path` pattern or any ADDED diff line matches a `content` pattern.
+# (A spec line "Risk: high" also forces it.) Edit freely.
+#
+# Format: <path|content> <name> <python regex>
+#   name  short label shown in the risk_why field; the regex is the rest of the line.
+#   Patterns are case-sensitive unless they start with (?i).
+
+# --- auth --------------------------------------------------------------------
+path    auth        (?i)(^|/)[^/]*(auth|login|logout|session|oauth|sso|jwt|permission|acl)[^/]*$
+content auth        (?i)\b(authenticat\w*|authoriz\w*|password|passwd|bcrypt|scrypt|argon2|jwt|oauth|csrf|set-cookie|is_admin|has_permission)\b
+
+# --- crypto / TLS ------------------------------------------------------------
+path    crypto      (?i)(^|/)[^/]*(crypt|cipher|tls|ssl|cert|signing|keychain)[^/]*$
+content crypto      \b(hashlib|hmac|pbkdf2\w*|AES|RSA|ECDSA|SecKey\w*|CryptoKit|CommonCrypto|SecTrust\w*|SSLContext|ssl\.wrap_socket|X509|nonce)\b
+content tls-off     (?i)(verify\s*=\s*False|InsecureSkipVerify|CERT_NONE|check_hostname\s*=\s*False|allowsInvalidCertificates|NSAllowsArbitraryLoads)
+
+# --- network parsing ---------------------------------------------------------
+path    net-parse   (?i)(^|/)[^/]*(protocol|parser|imap|smtp|pop3|http|socket|wire|codec)[^/]*$
+content net-parse   \b(socket\.socket|recv\(|recv_into|struct\.unpack|NWConnection|URLSessionStreamTask|BaseHTTPRequestHandler|http\.server|parse_?(header|request|response|packet|message|frame)s?)\b
+
+# --- SQL / transactions ------------------------------------------------------
+path    sql         (?i)(\.sql$|(^|/)migrations?/)
+content sql         \b(SELECT\s.+\sFROM|INSERT\s+INTO|UPDATE\s+\w+\s+SET|DELETE\s+FROM|BEGIN(\s+TRANSACTION)?;?$|COMMIT|ROLLBACK|PRAGMA|executemany|\.execute\(|sqlite3_exec)\b
+
+# --- delete / expunge / file deletion ----------------------------------------
+content delete      (?i)\b(expunge\w*|purge\w*|truncate\s+table|drop\s+table|\.delete\(|delete_\w+\(|removeItem\(|unlink\(|rmtree|os\.remove|shutil\.rmtree|rm\s+-r?f)\b
+
+# --- concurrency / locks -----------------------------------------------------
+content concurrency \b(threading|Thread\(|Lock\(|RLock|Semaphore|Condition\(|asyncio\.(Lock|gather|create_task|Queue)|DispatchQueue|DispatchSemaphore|NSLock|os_unfair_lock|OSAllocatedUnfairLock|@MainActor|nonisolated|Mutex|sync\.Mutex|pthread_\w+|multiprocessing|flock|fcntl\.lockf|atomic\w*)\b
+content concurrency \bactor\s+[A-Z]\w*
+
+# --- credentials / secrets ---------------------------------------------------
+path    credentials (?i)((^|/)\.env(\.|$)|secret|credential|token|\.pem$|\.key$|\.p12$|id_rsa|id_ed25519)
+content credentials (?i)\b(api[_-]?key|secret[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|private[_-]?key|kSecClass\w*|SecItem(Add|Update|CopyMatching|Delete))\b

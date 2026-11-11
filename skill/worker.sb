@@ -1,0 +1,42 @@
+(version 1)
+; Write jail for a delegate worker (macOS sandbox-exec). Exec and network stay open
+; (toolchains, model APIs). Writes are denied everywhere except the paths passed in as
+; parameters and a few runtime/cache locations. Reads are open except for key folders.
+(allow default)
+(deny file-write*)
+(allow file-write*
+  (subpath (param "WORKTREE"))
+  (subpath (param "OUTDIR"))
+  (subpath (param "EXTRA1"))
+  (subpath (param "EXTRA2"))
+  (subpath (param "EXTRA3"))
+  (subpath (param "TMP"))
+  ; the worker CLI's own state (sessions, logs); set per backend by lib.sh
+  (subpath (param "STATE1"))
+  (subpath (param "STATE2"))
+  (subpath (param "STATE3"))
+  (regex #"^/private/var/folders/[^/]+/[^/]+/C/")
+  ; Foundation's NSTemporaryDirectory() ignores TMPDIR and always uses the per-user T/ folder,
+  ; so Swift/AppKit test suites need it writable.
+  (regex #"^/private/var/folders/[^/]+/[^/]+/T/")
+  (subpath (string-append (param "HOME") "/.cache"))
+  (subpath (string-append (param "HOME") "/.npm"))
+  (subpath (string-append (param "HOME") "/Library/Caches"))
+  (literal "/dev/null")
+  (literal "/dev/tty")
+  (regex #"^/dev/(fd|ttys)"))
+; The worktree's .git file points into the main repo's .git/worktrees/<name>;
+; git needs to write its index there.
+(allow file-write* (subpath (param "GITDIR")))
+; Never writable, even if a parameter above overlaps.
+(deny file-write*
+  (subpath (string-append (param "HOME") "/.ssh"))
+  (subpath (string-append (param "HOME") "/.gnupg"))
+  (subpath (string-append (param "HOME") "/.aws"))
+  (literal (string-append (param "HOME") "/.gitconfig"))
+  (subpath (string-append (param "HOME") "/Library/Keychains")))
+; Never readable: a worker has network access, so keep private keys out of its reach.
+(deny file-read*
+  (subpath (string-append (param "HOME") "/.ssh"))
+  (subpath (string-append (param "HOME") "/.gnupg"))
+  (subpath (string-append (param "HOME") "/.aws")))

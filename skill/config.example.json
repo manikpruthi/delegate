@@ -1,0 +1,13 @@
+{
+  "_note": "Copy to config.json and edit. Exact model ids only; list them with `cmd --list-models`, `opencode models`, or https://openrouter.ai/models. The ids below are examples and go out of date. Aliases work as @alias in /delegate.",
+  "presets": {
+    "deepseek":    { "backend": "commandcode", "model": "deepseek/deepseek-v4.1-flash",            "label": "DeepSeek V4.1 Flash via Command Code" },
+    "glm":         { "backend": "commandcode", "model": "z-ai/glm-5.3-flash",                      "label": "GLM 5.3 Flash via Command Code" },
+    "or-deepseek": { "backend": "openrouter",  "model": "deepseek/deepseek-v4.1-flash",            "label": "DeepSeek V4.1 Flash via OpenRouter" },
+    "or-glm":      { "backend": "openrouter",  "model": "z-ai/glm-5.3-flash",                      "label": "GLM 5.3 Flash via OpenRouter" },
+    "oc-deepseek": { "backend": "opencode",    "model": "openrouter/deepseek/deepseek-v4.1-flash", "label": "DeepSeek V4.1 Flash via OpenCode" }
+  },
+  "default": "deepseek",
+  "reviewer": { "backend": "claude", "model": "claude-opus-5-5", "effort": "medium" },
+  "trusted_roots": []
+}

@@ -1,0 +1,13 @@
+tests/.tmp/
+skill/config.json
+skill/scoreboard.jsonl
+__pycache__/
+*.pyc
+.DS_Store
+.delegate/
+brag-output/
+brag-output-*/
+CLAUDE.md
+AGENTS.md
+GEMINI.md
+.cursorrules

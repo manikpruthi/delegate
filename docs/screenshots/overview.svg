@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 430" font-family="-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <rect width="920" height="430" rx="14" fill="#0f172a"/>
+  <text x="32" y="44" fill="#f8fafc" font-size="20" font-weight="600">delegate: one manager, cheap workers, a reviewer for risky diffs</text>
+
+  <!-- manager -->
+  <rect x="32" y="150" width="190" height="130" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="127" y="180" fill="#38bdf8" font-size="15" font-weight="600" text-anchor="middle">Manager</text>
+  <text x="127" y="204" fill="#cbd5e1" font-size="12.5" text-anchor="middle">your main agent</text>
+  <text x="127" y="230" fill="#94a3b8" font-size="12" text-anchor="middle">plans, writes specs,</text>
+  <text x="127" y="247" fill="#94a3b8" font-size="12" text-anchor="middle">approves access,</text>
+  <text x="127" y="264" fill="#94a3b8" font-size="12" text-anchor="middle">reads one line per task</text>
+
+  <!-- workers -->
+  <rect x="300" y="70" width="330" height="236" rx="10" fill="none" stroke="#475569" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="316" y="94" fill="#94a3b8" font-size="12">OS write jail: each worker in its own git worktree</text>
+  <g font-size="13">
+    <rect x="318" y="108" width="294" height="54" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.2"/>
+    <text x="334" y="131" fill="#34d399" font-weight="600">Worker · Command Code</text>
+    <text x="334" y="150" fill="#94a3b8" font-size="12">cmd, any model it lists</text>
+    <rect x="318" y="172" width="294" height="54" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.2"/>
+    <text x="334" y="195" fill="#34d399" font-weight="600">Worker · OpenCode</text>
+    <text x="334" y="214" fill="#94a3b8" font-size="12">opencode run --standalone, any provider</text>
+    <rect x="318" y="236" width="294" height="54" rx="8" fill="#1e293b" stroke="#34d399" stroke-width="1.2"/>
+    <text x="334" y="259" fill="#34d399" font-weight="600">Worker · OpenRouter</text>
+    <text x="334" y="278" fill="#94a3b8" font-size="12">built-in agent loop, only an API key</text>
+  </g>
+
+  <!-- reviewer + merge -->
+  <rect x="700" y="92" width="188" height="92" rx="10" fill="#1e293b" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="794" y="120" fill="#fbbf24" font-size="15" font-weight="600" text-anchor="middle">Reviewer</text>
+  <text x="794" y="143" fill="#94a3b8" font-size="12" text-anchor="middle">stronger model, read-only,</text>
+  <text x="794" y="160" fill="#94a3b8" font-size="12" text-anchor="middle">high-risk diffs only</text>
+  <rect x="700" y="214" width="188" height="92" rx="10" fill="#1e293b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="794" y="242" fill="#a78bfa" font-size="15" font-weight="600" text-anchor="middle">Merge</text>
+  <text x="794" y="265" fill="#94a3b8" font-size="12" text-anchor="middle">review gate, merge, tests,</text>
+  <text x="794" y="282" fill="#94a3b8" font-size="12" text-anchor="middle">clean up worktrees</text>
+
+  <g stroke="#64748b" stroke-width="1.6" fill="none" marker-end="url(#a)">
+    <path d="M222 215 H296"/>
+    <path d="M630 150 H696"/>
+    <path d="M794 184 V210"/>
+    <path d="M630 262 H696"/>
+  </g>
+  <text x="259" y="205" fill="#94a3b8" font-size="11.5" text-anchor="middle">specs</text>
+  <text x="663" y="141" fill="#94a3b8" font-size="11.5" text-anchor="middle">risky</text>
+  <text x="663" y="253" fill="#94a3b8" font-size="11.5" text-anchor="middle">safe</text>
+
+  <!-- sample output -->
+  <rect x="32" y="328" width="856" height="78" rx="8" fill="#020617" stroke="#1e293b"/>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5">
+    <text x="48" y="352" fill="#34d399">PASS            importer  deepseek-v4.1-flash  212s  4 files</text>
+    <text x="48" y="372" fill="#fbbf24">PASS            login     glm-5.3-flash        187s  3 files  REVIEW (auth)</text>
+    <text x="48" y="392" fill="#cbd5e1">SUMMARY 2/2 PASS, 1 need REVIEW, longest 212s, 610k in / 9k out</text>
+  </g>
+</svg>
